@@ -1,0 +1,589 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EntrevistaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Canton">
+          <Key>
+            <PropertyRef Name="id_Canton" />
+          </Key>
+          <Property Name="id_Canton" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Provincia" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="usuarioCrea" Type="varchar" MaxLength="50" />
+          <Property Name="fechaCrea" Type="datetime" />
+          <Property Name="usuarioModifica" Type="varchar" MaxLength="50" />
+          <Property Name="fechaModifica" Type="datetime" />
+          <Property Name="vc_Estado" Type="varchar" MaxLength="3" />
+          <Property Name="id_CantonInec" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Distrito">
+          <Key>
+            <PropertyRef Name="id_Distrito" />
+          </Key>
+          <Property Name="id_Distrito" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Canton" Type="int" />
+          <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="usuarioCrea" Type="varchar" MaxLength="50" />
+          <Property Name="fechaCrea" Type="datetime" />
+          <Property Name="usuarioModifica" Type="varchar" MaxLength="50" />
+          <Property Name="fechaModifica" Type="datetime" />
+          <Property Name="vc_Estado" Type="varchar" MaxLength="3" />
+          <Property Name="id_DistritoInec" Type="int" />
+        </EntityType>
+        <EntityType Name="Personas">
+          <Key>
+            <PropertyRef Name="Id_Persona" />
+          </Key>
+          <Property Name="Id_Persona" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Correo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="id_Provincia" Type="int" Nullable="false" />
+          <Property Name="id_Canton" Type="int" Nullable="false" />
+          <Property Name="id_Distrito" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Provincia">
+          <Key>
+            <PropertyRef Name="id_Provincia" />
+          </Key>
+          <Property Name="id_Provincia" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="usuarioCrea" Type="varchar" MaxLength="50" />
+          <Property Name="fechaCrea" Type="datetime" />
+          <Property Name="usuarioModifica" Type="varchar" MaxLength="50" />
+          <Property Name="fechaModifica" Type="datetime" />
+          <Property Name="vc_Estado" Type="varchar" MaxLength="3" />
+        </EntityType>
+        <Association Name="FK_Canton_Provincia">
+          <End Role="Provincia" Type="Self.Provincia" Multiplicity="1" />
+          <End Role="Canton" Type="Self.Canton" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provincia">
+              <PropertyRef Name="id_Provincia" />
+            </Principal>
+            <Dependent Role="Canton">
+              <PropertyRef Name="id_Provincia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Distrito_Canton">
+          <End Role="Canton" Type="Self.Canton" Multiplicity="0..1" />
+          <End Role="Distrito" Type="Self.Distrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Canton">
+              <PropertyRef Name="id_Canton" />
+            </Principal>
+            <Dependent Role="Distrito">
+              <PropertyRef Name="id_Canton" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personas_Canton">
+          <End Role="Canton" Type="Self.Canton" Multiplicity="1" />
+          <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Canton">
+              <PropertyRef Name="id_Canton" />
+            </Principal>
+            <Dependent Role="Personas">
+              <PropertyRef Name="id_Canton" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personas_Distrito">
+          <End Role="Distrito" Type="Self.Distrito" Multiplicity="1" />
+          <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Distrito">
+              <PropertyRef Name="id_Distrito" />
+            </Principal>
+            <Dependent Role="Personas">
+              <PropertyRef Name="id_Distrito" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personas_Provincia">
+          <End Role="Provincia" Type="Self.Provincia" Multiplicity="1" />
+          <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provincia">
+              <PropertyRef Name="id_Provincia" />
+            </Principal>
+            <Dependent Role="Personas">
+              <PropertyRef Name="id_Provincia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_EliminaPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Persona" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ModificaPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_Persona" Type="int" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Correo" Type="varchar" Mode="In" />
+          <Parameter Name="Provincia" Type="int" Mode="In" />
+          <Parameter Name="Canton" Type="int" Mode="In" />
+          <Parameter Name="Distrito" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_RegistraPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="varchar" Mode="In" />
+          <Parameter Name="correo" Type="varchar" Mode="In" />
+          <Parameter Name="Provincia" Type="int" Mode="In" />
+          <Parameter Name="Canton" Type="int" Mode="In" />
+          <Parameter Name="Distrito" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_RetornaCantones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="varchar" Mode="In" />
+          <Parameter Name="id_Provincia" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_RetornaDistritos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="varchar" Mode="In" />
+          <Parameter Name="id_Canton" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_RetornaPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_RetornaPersonaID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id_Persona" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_RetornaPersonas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_RetornaProvincias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="EntrevistaModelStoreContainer">
+          <EntitySet Name="Canton" EntityType="Self.Canton" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Distrito" EntityType="Self.Distrito" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Personas" EntityType="Self.Personas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Provincia" EntityType="Self.Provincia" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Canton_Provincia" Association="Self.FK_Canton_Provincia">
+            <End Role="Provincia" EntitySet="Provincia" />
+            <End Role="Canton" EntitySet="Canton" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Distrito_Canton" Association="Self.FK_Distrito_Canton">
+            <End Role="Canton" EntitySet="Canton" />
+            <End Role="Distrito" EntitySet="Distrito" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personas_Canton" Association="Self.FK_Personas_Canton">
+            <End Role="Canton" EntitySet="Canton" />
+            <End Role="Personas" EntitySet="Personas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personas_Distrito" Association="Self.FK_Personas_Distrito">
+            <End Role="Distrito" EntitySet="Distrito" />
+            <End Role="Personas" EntitySet="Personas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personas_Provincia" Association="Self.FK_Personas_Provincia">
+            <End Role="Provincia" EntitySet="Provincia" />
+            <End Role="Personas" EntitySet="Personas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EntrevistaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Canton">
+          <Key>
+            <PropertyRef Name="id_Canton" />
+          </Key>
+          <Property Name="id_Canton" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Provincia" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="usuarioCrea" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fechaCrea" Type="DateTime" Precision="3" />
+          <Property Name="usuarioModifica" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fechaModifica" Type="DateTime" Precision="3" />
+          <Property Name="vc_Estado" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="id_CantonInec" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Provincia" Relationship="Self.FK_Canton_Provincia" FromRole="Canton" ToRole="Provincia" />
+          <NavigationProperty Name="Distrito" Relationship="Self.FK_Distrito_Canton" FromRole="Canton" ToRole="Distrito" />
+          <NavigationProperty Name="Personas" Relationship="Self.FK_Personas_Canton" FromRole="Canton" ToRole="Personas" />
+        </EntityType>
+        <EntityType Name="Distrito">
+          <Key>
+            <PropertyRef Name="id_Distrito" />
+          </Key>
+          <Property Name="id_Distrito" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Canton" Type="Int32" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="usuarioCrea" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fechaCrea" Type="DateTime" Precision="3" />
+          <Property Name="usuarioModifica" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fechaModifica" Type="DateTime" Precision="3" />
+          <Property Name="vc_Estado" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="id_DistritoInec" Type="Int32" />
+          <NavigationProperty Name="Canton" Relationship="Self.FK_Distrito_Canton" FromRole="Distrito" ToRole="Canton" />
+          <NavigationProperty Name="Personas" Relationship="Self.FK_Personas_Distrito" FromRole="Distrito" ToRole="Personas" />
+        </EntityType>
+        <EntityType Name="Personas">
+          <Key>
+            <PropertyRef Name="Id_Persona" />
+          </Key>
+          <Property Name="Id_Persona" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id_Provincia" Type="Int32" Nullable="false" />
+          <Property Name="id_Canton" Type="Int32" Nullable="false" />
+          <Property Name="id_Distrito" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Canton" Relationship="Self.FK_Personas_Canton" FromRole="Personas" ToRole="Canton" />
+          <NavigationProperty Name="Distrito" Relationship="Self.FK_Personas_Distrito" FromRole="Personas" ToRole="Distrito" />
+          <NavigationProperty Name="Provincia" Relationship="Self.FK_Personas_Provincia" FromRole="Personas" ToRole="Provincia" />
+        </EntityType>
+        <EntityType Name="Provincia">
+          <Key>
+            <PropertyRef Name="id_Provincia" />
+          </Key>
+          <Property Name="id_Provincia" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="usuarioCrea" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fechaCrea" Type="DateTime" Precision="3" />
+          <Property Name="usuarioModifica" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fechaModifica" Type="DateTime" Precision="3" />
+          <Property Name="vc_Estado" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Canton" Relationship="Self.FK_Canton_Provincia" FromRole="Provincia" ToRole="Canton" />
+          <NavigationProperty Name="Personas" Relationship="Self.FK_Personas_Provincia" FromRole="Provincia" ToRole="Personas" />
+        </EntityType>
+        <Association Name="FK_Canton_Provincia">
+          <End Role="Provincia" Type="Self.Provincia" Multiplicity="1" />
+          <End Role="Canton" Type="Self.Canton" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provincia">
+              <PropertyRef Name="id_Provincia" />
+            </Principal>
+            <Dependent Role="Canton">
+              <PropertyRef Name="id_Provincia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Distrito_Canton">
+          <End Role="Canton" Type="Self.Canton" Multiplicity="0..1" />
+          <End Role="Distrito" Type="Self.Distrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Canton">
+              <PropertyRef Name="id_Canton" />
+            </Principal>
+            <Dependent Role="Distrito">
+              <PropertyRef Name="id_Canton" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personas_Canton">
+          <End Role="Canton" Type="Self.Canton" Multiplicity="1" />
+          <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Canton">
+              <PropertyRef Name="id_Canton" />
+            </Principal>
+            <Dependent Role="Personas">
+              <PropertyRef Name="id_Canton" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personas_Distrito">
+          <End Role="Distrito" Type="Self.Distrito" Multiplicity="1" />
+          <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Distrito">
+              <PropertyRef Name="id_Distrito" />
+            </Principal>
+            <Dependent Role="Personas">
+              <PropertyRef Name="id_Distrito" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personas_Provincia">
+          <End Role="Provincia" Type="Self.Provincia" Multiplicity="1" />
+          <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provincia">
+              <PropertyRef Name="id_Provincia" />
+            </Principal>
+            <Dependent Role="Personas">
+              <PropertyRef Name="id_Provincia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EntrevistaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Canton" EntityType="Self.Canton" />
+          <EntitySet Name="Distrito" EntityType="Self.Distrito" />
+          <EntitySet Name="Personas" EntityType="Self.Personas" />
+          <EntitySet Name="Provincia" EntityType="Self.Provincia" />
+          <AssociationSet Name="FK_Canton_Provincia" Association="Self.FK_Canton_Provincia">
+            <End Role="Provincia" EntitySet="Provincia" />
+            <End Role="Canton" EntitySet="Canton" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Distrito_Canton" Association="Self.FK_Distrito_Canton">
+            <End Role="Canton" EntitySet="Canton" />
+            <End Role="Distrito" EntitySet="Distrito" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personas_Canton" Association="Self.FK_Personas_Canton">
+            <End Role="Canton" EntitySet="Canton" />
+            <End Role="Personas" EntitySet="Personas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personas_Distrito" Association="Self.FK_Personas_Distrito">
+            <End Role="Distrito" EntitySet="Distrito" />
+            <End Role="Personas" EntitySet="Personas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personas_Provincia" Association="Self.FK_Personas_Provincia">
+            <End Role="Provincia" EntitySet="Provincia" />
+            <End Role="Personas" EntitySet="Personas" />
+          </AssociationSet>
+          <FunctionImport Name="sp_EliminaPersona">
+          <Parameter Name="id_Persona" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ModificaPersona">
+            <Parameter Name="id_Persona" Mode="In" Type="Int32" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Correo" Mode="In" Type="String" />
+            <Parameter Name="Provincia" Mode="In" Type="Int32" />
+            <Parameter Name="Canton" Mode="In" Type="Int32" />
+            <Parameter Name="Distrito" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_RegistraPersona">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="correo" Mode="In" Type="String" />
+            <Parameter Name="Provincia" Mode="In" Type="Int32" />
+            <Parameter Name="Canton" Mode="In" Type="Int32" />
+            <Parameter Name="Distrito" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_RetornaCantones" ReturnType="Collection(EntrevistaModel.sp_RetornaCantones_Result)">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="id_Provincia" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_RetornaDistritos" ReturnType="Collection(EntrevistaModel.sp_RetornaDistritos_Result)">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="id_Canton" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_RetornaPersona" ReturnType="Collection(EntrevistaModel.sp_RetornaPersona_Result)" />
+          <FunctionImport Name="sp_RetornaPersonas" ReturnType="Collection(EntrevistaModel.sp_RetornaPersonas_Result)" />
+          <FunctionImport Name="sp_RetornaProvincias" ReturnType="Collection(EntrevistaModel.sp_RetornaProvincias_Result)">
+          <Parameter Name="nombre" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_RetornaPersonaID" ReturnType="Collection(EntrevistaModel.sp_RetornaPersonaID_Result)">
+            <Parameter Name="Id_Persona" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_RetornaCantones_Result">
+          <Property Type="Int32" Name="id_Canton" Nullable="false" />
+          <Property Type="Int32" Name="id_Provincia" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Provincia" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="usuarioCrea" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fechaCrea" Nullable="true" Precision="23" />
+          <Property Type="String" Name="usuarioModifica" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fechaModifica" Nullable="true" Precision="23" />
+          <Property Type="String" Name="vc_Estado" Nullable="true" MaxLength="3" />
+          <Property Type="Int32" Name="id_CantonInec" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_RetornaDistritos_Result">
+          <Property Type="Int32" Name="id_Distrito" Nullable="false" />
+          <Property Type="Int32" Name="id_Canton" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Canton" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="usuarioCrea" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fechaCrea" Nullable="true" Precision="23" />
+          <Property Type="String" Name="usuarioModifica" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fechaModifica" Nullable="true" Precision="23" />
+          <Property Type="String" Name="vc_Estado" Nullable="true" MaxLength="3" />
+          <Property Type="Int32" Name="id_DistritoInec" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_RetornaPersona_Result">
+          <Property Type="Int32" Name="Id_Persona" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Correo" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Provincia" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="canton" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="distrito" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="sp_RetornaPersonas_Result">
+          <Property Type="Int32" Name="Id_Persona" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Correo" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="id_Provincia" Nullable="false" />
+          <Property Type="Int32" Name="id_Canton" Nullable="false" />
+          <Property Type="Int32" Name="id_Distrito" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_RetornaProvincias_Result">
+          <Property Type="Int32" Name="id_Provincia" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="usuarioCrea" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fechaCrea" Nullable="true" Precision="23" />
+          <Property Type="String" Name="usuarioModifica" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="fechaModifica" Nullable="true" Precision="23" />
+          <Property Type="String" Name="vc_Estado" Nullable="true" MaxLength="3" />
+        </ComplexType>
+        <ComplexType Name="sp_RetornaPersonaID_Result">
+          <Property Type="Int32" Name="Id_Persona" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Correo" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Id_Provincia" Nullable="false" />
+          <Property Type="Int32" Name="Id_Canton" Nullable="false" />
+          <Property Type="Int32" Name="Id_Distrito" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EntrevistaModelStoreContainer" CdmEntityContainer="EntrevistaEntities">
+          <EntitySetMapping Name="Canton">
+            <EntityTypeMapping TypeName="EntrevistaModel.Canton">
+              <MappingFragment StoreEntitySet="Canton">
+                <ScalarProperty Name="id_Canton" ColumnName="id_Canton" />
+                <ScalarProperty Name="id_Provincia" ColumnName="id_Provincia" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="usuarioCrea" ColumnName="usuarioCrea" />
+                <ScalarProperty Name="fechaCrea" ColumnName="fechaCrea" />
+                <ScalarProperty Name="usuarioModifica" ColumnName="usuarioModifica" />
+                <ScalarProperty Name="fechaModifica" ColumnName="fechaModifica" />
+                <ScalarProperty Name="vc_Estado" ColumnName="vc_Estado" />
+                <ScalarProperty Name="id_CantonInec" ColumnName="id_CantonInec" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Distrito">
+            <EntityTypeMapping TypeName="EntrevistaModel.Distrito">
+              <MappingFragment StoreEntitySet="Distrito">
+                <ScalarProperty Name="id_Distrito" ColumnName="id_Distrito" />
+                <ScalarProperty Name="id_Canton" ColumnName="id_Canton" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="usuarioCrea" ColumnName="usuarioCrea" />
+                <ScalarProperty Name="fechaCrea" ColumnName="fechaCrea" />
+                <ScalarProperty Name="usuarioModifica" ColumnName="usuarioModifica" />
+                <ScalarProperty Name="fechaModifica" ColumnName="fechaModifica" />
+                <ScalarProperty Name="vc_Estado" ColumnName="vc_Estado" />
+                <ScalarProperty Name="id_DistritoInec" ColumnName="id_DistritoInec" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Personas">
+            <EntityTypeMapping TypeName="EntrevistaModel.Personas">
+              <MappingFragment StoreEntitySet="Personas">
+                <ScalarProperty Name="Id_Persona" ColumnName="Id_Persona" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="id_Provincia" ColumnName="id_Provincia" />
+                <ScalarProperty Name="id_Canton" ColumnName="id_Canton" />
+                <ScalarProperty Name="id_Distrito" ColumnName="id_Distrito" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Provincia">
+            <EntityTypeMapping TypeName="EntrevistaModel.Provincia">
+              <MappingFragment StoreEntitySet="Provincia">
+                <ScalarProperty Name="id_Provincia" ColumnName="id_Provincia" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="usuarioCrea" ColumnName="usuarioCrea" />
+                <ScalarProperty Name="fechaCrea" ColumnName="fechaCrea" />
+                <ScalarProperty Name="usuarioModifica" ColumnName="usuarioModifica" />
+                <ScalarProperty Name="fechaModifica" ColumnName="fechaModifica" />
+                <ScalarProperty Name="vc_Estado" ColumnName="vc_Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_EliminaPersona" FunctionName="EntrevistaModel.Store.sp_EliminaPersona" />
+          <FunctionImportMapping FunctionImportName="sp_ModificaPersona" FunctionName="EntrevistaModel.Store.sp_ModificaPersona" />
+          <FunctionImportMapping FunctionImportName="sp_RegistraPersona" FunctionName="EntrevistaModel.Store.sp_RegistraPersona" />
+          <FunctionImportMapping FunctionImportName="sp_RetornaCantones" FunctionName="EntrevistaModel.Store.sp_RetornaCantones">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EntrevistaModel.sp_RetornaCantones_Result">
+                <ScalarProperty Name="id_Canton" ColumnName="id_Canton" />
+                <ScalarProperty Name="id_Provincia" ColumnName="id_Provincia" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Provincia" ColumnName="Provincia" />
+                <ScalarProperty Name="usuarioCrea" ColumnName="usuarioCrea" />
+                <ScalarProperty Name="fechaCrea" ColumnName="fechaCrea" />
+                <ScalarProperty Name="usuarioModifica" ColumnName="usuarioModifica" />
+                <ScalarProperty Name="fechaModifica" ColumnName="fechaModifica" />
+                <ScalarProperty Name="vc_Estado" ColumnName="vc_Estado" />
+                <ScalarProperty Name="id_CantonInec" ColumnName="id_CantonInec" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_RetornaDistritos" FunctionName="EntrevistaModel.Store.sp_RetornaDistritos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EntrevistaModel.sp_RetornaDistritos_Result">
+                <ScalarProperty Name="id_Distrito" ColumnName="id_Distrito" />
+                <ScalarProperty Name="id_Canton" ColumnName="id_Canton" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="Canton" ColumnName="Canton" />
+                <ScalarProperty Name="usuarioCrea" ColumnName="usuarioCrea" />
+                <ScalarProperty Name="fechaCrea" ColumnName="fechaCrea" />
+                <ScalarProperty Name="usuarioModifica" ColumnName="usuarioModifica" />
+                <ScalarProperty Name="fechaModifica" ColumnName="fechaModifica" />
+                <ScalarProperty Name="vc_Estado" ColumnName="vc_Estado" />
+                <ScalarProperty Name="id_DistritoInec" ColumnName="id_DistritoInec" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_RetornaPersona" FunctionName="EntrevistaModel.Store.sp_RetornaPersona">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EntrevistaModel.sp_RetornaPersona_Result">
+                <ScalarProperty Name="Id_Persona" ColumnName="Id_Persona" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Provincia" ColumnName="Provincia" />
+                <ScalarProperty Name="canton" ColumnName="canton" />
+                <ScalarProperty Name="distrito" ColumnName="distrito" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_RetornaPersonas" FunctionName="EntrevistaModel.Store.sp_RetornaPersonas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EntrevistaModel.sp_RetornaPersonas_Result">
+                <ScalarProperty Name="Id_Persona" ColumnName="Id_Persona" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="id_Provincia" ColumnName="id_Provincia" />
+                <ScalarProperty Name="id_Canton" ColumnName="id_Canton" />
+                <ScalarProperty Name="id_Distrito" ColumnName="id_Distrito" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_RetornaProvincias" FunctionName="EntrevistaModel.Store.sp_RetornaProvincias">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EntrevistaModel.sp_RetornaProvincias_Result">
+                <ScalarProperty Name="id_Provincia" ColumnName="id_Provincia" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="usuarioCrea" ColumnName="usuarioCrea" />
+                <ScalarProperty Name="fechaCrea" ColumnName="fechaCrea" />
+                <ScalarProperty Name="usuarioModifica" ColumnName="usuarioModifica" />
+                <ScalarProperty Name="fechaModifica" ColumnName="fechaModifica" />
+                <ScalarProperty Name="vc_Estado" ColumnName="vc_Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_RetornaPersonaID" FunctionName="EntrevistaModel.Store.sp_RetornaPersonaID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EntrevistaModel.sp_RetornaPersonaID_Result">
+                <ScalarProperty Name="Id_Persona" ColumnName="Id_Persona" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Id_Provincia" ColumnName="Id_Provincia" />
+                <ScalarProperty Name="Id_Canton" ColumnName="Id_Canton" />
+                <ScalarProperty Name="Id_Distrito" ColumnName="Id_Distrito" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

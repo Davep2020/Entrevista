@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "PersonaEliminar";
+}
+
+<form method="post" style="border:1px black solid">
+    <h1>Persona</h1>
+    <a href="~/Personas/PersonaLista">Lista Persona</a>
+    <div class="form-group">
+        <input type="text" name="Nombre" placeholder="Nombre" id="Nombre" value="@Model.Nombre" readonly />
+    </div>
+    <div class="form-group">
+        <input type="email" name="Correo" placeholder="Correo" id="Correo" value="@Model.Correo" readonly />
+    </div>
+    <div class="form-group">
+        <select name="Id_Provincia" id="provincia" class="form-control" readonly>
+            <option value=""></option>
+            @{
+                foreach (Prueba.Models.sp_RetornaProvincias_Result Provincias in this.ViewBag.ListaProvincia)
+                {
+                    bool idProvincias = Provincias.id_Provincia == Model.Id_Provincia;
+                    if (idProvincias)
+                    {
+                        <option value="@Model.Id_Provincia" selected>@Provincias.nombre</option>
+                    }
+                    else
+                    {
+                        <option value="@Model.Id_Provincia">@Provincias.nombre</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <select name="Id_Canton" id="canton" class="form-control" readonly>
+            <option value=""></option>
+
+            @{
+                foreach (Prueba.Models.sp_RetornaCantones_Result Cantones in this.ViewBag.ListaCanton)
+                {
+                    bool idProvincias = Cantones.id_Canton == Model.Id_Canton;
+                    if (idProvincias)
+                    {
+                        <option value="@Model.Id_Canton" selected>@Cantones.nombre</option>
+                    }
+                    else
+                    {
+                        <option value="@Model.Id_Canton">@Cantones.nombre</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <select name="Id_Distrito" id="distrito" class="form-control" readonly>
+            <option value=""></option>
+            @{
+                foreach (Prueba.Models.sp_RetornaDistritos_Result Distritos in this.ViewBag.ListaDistrito)
+                {
+                    bool idProvincias = Distritos.id_Distrito == Model.Id_Distrito;
+                    if (idProvincias)
+                    {
+                        <option value="@Model.Id_Distrito" selected>@Distritos.nombre</option>
+                    }
+                    else
+                    {
+                        <option value="@Model.Id_Distrito">@Distritos.nombre</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Eliminar" id="btnEliminar" />
+    </div>
+</form>

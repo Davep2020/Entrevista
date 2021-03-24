@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EntrevistaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Canton">
+    <Key>
+      <PropertyRef Name="id_Canton" />
+    </Key>
+    <Property Name="id_Canton" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_Provincia" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="usuarioCrea" Type="varchar" MaxLength="50" />
+    <Property Name="fechaCrea" Type="datetime" />
+    <Property Name="usuarioModifica" Type="varchar" MaxLength="50" />
+    <Property Name="fechaModifica" Type="datetime" />
+    <Property Name="vc_Estado" Type="varchar" MaxLength="3" />
+    <Property Name="id_CantonInec" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Distrito">
+    <Key>
+      <PropertyRef Name="id_Distrito" />
+    </Key>
+    <Property Name="id_Distrito" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_Canton" Type="int" />
+    <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="usuarioCrea" Type="varchar" MaxLength="50" />
+    <Property Name="fechaCrea" Type="datetime" />
+    <Property Name="usuarioModifica" Type="varchar" MaxLength="50" />
+    <Property Name="fechaModifica" Type="datetime" />
+    <Property Name="vc_Estado" Type="varchar" MaxLength="3" />
+    <Property Name="id_DistritoInec" Type="int" />
+  </EntityType>
+  <EntityType Name="Personas">
+    <Key>
+      <PropertyRef Name="Id_Persona" />
+    </Key>
+    <Property Name="Id_Persona" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Correo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="id_Provincia" Type="int" Nullable="false" />
+    <Property Name="id_Canton" Type="int" Nullable="false" />
+    <Property Name="id_Distrito" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Provincia">
+    <Key>
+      <PropertyRef Name="id_Provincia" />
+    </Key>
+    <Property Name="id_Provincia" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="usuarioCrea" Type="varchar" MaxLength="50" />
+    <Property Name="fechaCrea" Type="datetime" />
+    <Property Name="usuarioModifica" Type="varchar" MaxLength="50" />
+    <Property Name="fechaModifica" Type="datetime" />
+    <Property Name="vc_Estado" Type="varchar" MaxLength="3" />
+  </EntityType>
+  <Association Name="FK_Canton_Provincia">
+    <End Role="Provincia" Type="Self.Provincia" Multiplicity="1" />
+    <End Role="Canton" Type="Self.Canton" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provincia">
+        <PropertyRef Name="id_Provincia" />
+      </Principal>
+      <Dependent Role="Canton">
+        <PropertyRef Name="id_Provincia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Distrito_Canton">
+    <End Role="Canton" Type="Self.Canton" Multiplicity="0..1" />
+    <End Role="Distrito" Type="Self.Distrito" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Canton">
+        <PropertyRef Name="id_Canton" />
+      </Principal>
+      <Dependent Role="Distrito">
+        <PropertyRef Name="id_Canton" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Personas_Canton">
+    <End Role="Canton" Type="Self.Canton" Multiplicity="1" />
+    <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Canton">
+        <PropertyRef Name="id_Canton" />
+      </Principal>
+      <Dependent Role="Personas">
+        <PropertyRef Name="id_Canton" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Personas_Distrito">
+    <End Role="Distrito" Type="Self.Distrito" Multiplicity="1" />
+    <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Distrito">
+        <PropertyRef Name="id_Distrito" />
+      </Principal>
+      <Dependent Role="Personas">
+        <PropertyRef Name="id_Distrito" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Personas_Provincia">
+    <End Role="Provincia" Type="Self.Provincia" Multiplicity="1" />
+    <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provincia">
+        <PropertyRef Name="id_Provincia" />
+      </Principal>
+      <Dependent Role="Personas">
+        <PropertyRef Name="id_Provincia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="sp_EliminaPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_Persona" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ModificaPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="id_Persona" Type="int" Mode="In" />
+    <Parameter Name="Nombre" Type="varchar" Mode="In" />
+    <Parameter Name="Correo" Type="varchar" Mode="In" />
+    <Parameter Name="Provincia" Type="int" Mode="In" />
+    <Parameter Name="Canton" Type="int" Mode="In" />
+    <Parameter Name="Distrito" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_RegistraPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="nombre" Type="varchar" Mode="In" />
+    <Parameter Name="correo" Type="varchar" Mode="In" />
+    <Parameter Name="Provincia" Type="int" Mode="In" />
+    <Parameter Name="Canton" Type="int" Mode="In" />
+    <Parameter Name="Distrito" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_RetornaCantones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="nombre" Type="varchar" Mode="In" />
+    <Parameter Name="id_Provincia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_RetornaDistritos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="nombre" Type="varchar" Mode="In" />
+    <Parameter Name="id_Canton" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_RetornaPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_RetornaPersonaID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Id_Persona" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_RetornaPersonas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_RetornaProvincias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="nombre" Type="varchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="EntrevistaModelStoreContainer">
+    <EntitySet Name="Canton" EntityType="Self.Canton" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Distrito" EntityType="Self.Distrito" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Personas" EntityType="Self.Personas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Provincia" EntityType="Self.Provincia" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Canton_Provincia" Association="Self.FK_Canton_Provincia">
+      <End Role="Provincia" EntitySet="Provincia" />
+      <End Role="Canton" EntitySet="Canton" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Distrito_Canton" Association="Self.FK_Distrito_Canton">
+      <End Role="Canton" EntitySet="Canton" />
+      <End Role="Distrito" EntitySet="Distrito" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Personas_Canton" Association="Self.FK_Personas_Canton">
+      <End Role="Canton" EntitySet="Canton" />
+      <End Role="Personas" EntitySet="Personas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Personas_Distrito" Association="Self.FK_Personas_Distrito">
+      <End Role="Distrito" EntitySet="Distrito" />
+      <End Role="Personas" EntitySet="Personas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Personas_Provincia" Association="Self.FK_Personas_Provincia">
+      <End Role="Provincia" EntitySet="Provincia" />
+      <End Role="Personas" EntitySet="Personas" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

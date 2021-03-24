@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EntrevistaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Canton">
+    <Key>
+      <PropertyRef Name="id_Canton" />
+    </Key>
+    <Property Name="id_Canton" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_Provincia" Type="Int32" Nullable="false" />
+    <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="usuarioCrea" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fechaCrea" Type="DateTime" Precision="3" />
+    <Property Name="usuarioModifica" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fechaModifica" Type="DateTime" Precision="3" />
+    <Property Name="vc_Estado" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Name="id_CantonInec" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Provincia" Relationship="Self.FK_Canton_Provincia" FromRole="Canton" ToRole="Provincia" />
+    <NavigationProperty Name="Distrito" Relationship="Self.FK_Distrito_Canton" FromRole="Canton" ToRole="Distrito" />
+    <NavigationProperty Name="Personas" Relationship="Self.FK_Personas_Canton" FromRole="Canton" ToRole="Personas" />
+  </EntityType>
+  <EntityType Name="Distrito">
+    <Key>
+      <PropertyRef Name="id_Distrito" />
+    </Key>
+    <Property Name="id_Distrito" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_Canton" Type="Int32" />
+    <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="usuarioCrea" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fechaCrea" Type="DateTime" Precision="3" />
+    <Property Name="usuarioModifica" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fechaModifica" Type="DateTime" Precision="3" />
+    <Property Name="vc_Estado" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Name="id_DistritoInec" Type="Int32" />
+    <NavigationProperty Name="Canton" Relationship="Self.FK_Distrito_Canton" FromRole="Distrito" ToRole="Canton" />
+    <NavigationProperty Name="Personas" Relationship="Self.FK_Personas_Distrito" FromRole="Distrito" ToRole="Personas" />
+  </EntityType>
+  <EntityType Name="Personas">
+    <Key>
+      <PropertyRef Name="Id_Persona" />
+    </Key>
+    <Property Name="Id_Persona" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="id_Provincia" Type="Int32" Nullable="false" />
+    <Property Name="id_Canton" Type="Int32" Nullable="false" />
+    <Property Name="id_Distrito" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Canton" Relationship="Self.FK_Personas_Canton" FromRole="Personas" ToRole="Canton" />
+    <NavigationProperty Name="Distrito" Relationship="Self.FK_Personas_Distrito" FromRole="Personas" ToRole="Distrito" />
+    <NavigationProperty Name="Provincia" Relationship="Self.FK_Personas_Provincia" FromRole="Personas" ToRole="Provincia" />
+  </EntityType>
+  <EntityType Name="Provincia">
+    <Key>
+      <PropertyRef Name="id_Provincia" />
+    </Key>
+    <Property Name="id_Provincia" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="usuarioCrea" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fechaCrea" Type="DateTime" Precision="3" />
+    <Property Name="usuarioModifica" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fechaModifica" Type="DateTime" Precision="3" />
+    <Property Name="vc_Estado" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Canton" Relationship="Self.FK_Canton_Provincia" FromRole="Provincia" ToRole="Canton" />
+    <NavigationProperty Name="Personas" Relationship="Self.FK_Personas_Provincia" FromRole="Provincia" ToRole="Personas" />
+  </EntityType>
+  <Association Name="FK_Canton_Provincia">
+    <End Role="Provincia" Type="Self.Provincia" Multiplicity="1" />
+    <End Role="Canton" Type="Self.Canton" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provincia">
+        <PropertyRef Name="id_Provincia" />
+      </Principal>
+      <Dependent Role="Canton">
+        <PropertyRef Name="id_Provincia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Distrito_Canton">
+    <End Role="Canton" Type="Self.Canton" Multiplicity="0..1" />
+    <End Role="Distrito" Type="Self.Distrito" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Canton">
+        <PropertyRef Name="id_Canton" />
+      </Principal>
+      <Dependent Role="Distrito">
+        <PropertyRef Name="id_Canton" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Personas_Canton">
+    <End Role="Canton" Type="Self.Canton" Multiplicity="1" />
+    <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Canton">
+        <PropertyRef Name="id_Canton" />
+      </Principal>
+      <Dependent Role="Personas">
+        <PropertyRef Name="id_Canton" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Personas_Distrito">
+    <End Role="Distrito" Type="Self.Distrito" Multiplicity="1" />
+    <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Distrito">
+        <PropertyRef Name="id_Distrito" />
+      </Principal>
+      <Dependent Role="Personas">
+        <PropertyRef Name="id_Distrito" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Personas_Provincia">
+    <End Role="Provincia" Type="Self.Provincia" Multiplicity="1" />
+    <End Role="Personas" Type="Self.Personas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Provincia">
+        <PropertyRef Name="id_Provincia" />
+      </Principal>
+      <Dependent Role="Personas">
+        <PropertyRef Name="id_Provincia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EntrevistaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Canton" EntityType="Self.Canton" />
+    <EntitySet Name="Distrito" EntityType="Self.Distrito" />
+    <EntitySet Name="Personas" EntityType="Self.Personas" />
+    <EntitySet Name="Provincia" EntityType="Self.Provincia" />
+    <AssociationSet Name="FK_Canton_Provincia" Association="Self.FK_Canton_Provincia">
+      <End Role="Provincia" EntitySet="Provincia" />
+      <End Role="Canton" EntitySet="Canton" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Distrito_Canton" Association="Self.FK_Distrito_Canton">
+      <End Role="Canton" EntitySet="Canton" />
+      <End Role="Distrito" EntitySet="Distrito" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Personas_Canton" Association="Self.FK_Personas_Canton">
+      <End Role="Canton" EntitySet="Canton" />
+      <End Role="Personas" EntitySet="Personas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Personas_Distrito" Association="Self.FK_Personas_Distrito">
+      <End Role="Distrito" EntitySet="Distrito" />
+      <End Role="Personas" EntitySet="Personas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Personas_Provincia" Association="Self.FK_Personas_Provincia">
+      <End Role="Provincia" EntitySet="Provincia" />
+      <End Role="Personas" EntitySet="Personas" />
+    </AssociationSet>
+    <FunctionImport Name="sp_EliminaPersona">
+      <Parameter Name="id_Persona" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_ModificaPersona">
+      <Parameter Name="id_Persona" Mode="In" Type="Int32" />
+      <Parameter Name="Nombre" Mode="In" Type="String" />
+      <Parameter Name="Correo" Mode="In" Type="String" />
+      <Parameter Name="Provincia" Mode="In" Type="Int32" />
+      <Parameter Name="Canton" Mode="In" Type="Int32" />
+      <Parameter Name="Distrito" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_RegistraPersona">
+      <Parameter Name="nombre" Mode="In" Type="String" />
+      <Parameter Name="correo" Mode="In" Type="String" />
+      <Parameter Name="Provincia" Mode="In" Type="Int32" />
+      <Parameter Name="Canton" Mode="In" Type="Int32" />
+      <Parameter Name="Distrito" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_RetornaCantones" ReturnType="Collection(EntrevistaModel.sp_RetornaCantones_Result)">
+      <Parameter Name="nombre" Mode="In" Type="String" />
+      <Parameter Name="id_Provincia" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_RetornaDistritos" ReturnType="Collection(EntrevistaModel.sp_RetornaDistritos_Result)">
+      <Parameter Name="nombre" Mode="In" Type="String" />
+      <Parameter Name="id_Canton" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_RetornaPersona" ReturnType="Collection(EntrevistaModel.sp_RetornaPersona_Result)" />
+    <FunctionImport Name="sp_RetornaPersonas" ReturnType="Collection(EntrevistaModel.sp_RetornaPersonas_Result)" />
+    <FunctionImport Name="sp_RetornaProvincias" ReturnType="Collection(EntrevistaModel.sp_RetornaProvincias_Result)">
+      <Parameter Name="nombre" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_RetornaPersonaID" ReturnType="Collection(EntrevistaModel.sp_RetornaPersonaID_Result)">
+      <Parameter Name="Id_Persona" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="sp_RetornaCantones_Result">
+    <Property Type="Int32" Name="id_Canton" Nullable="false" />
+    <Property Type="Int32" Name="id_Provincia" Nullable="false" />
+    <Property Type="String" Name="nombre" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Provincia" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="usuarioCrea" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="fechaCrea" Nullable="true" Precision="23" />
+    <Property Type="String" Name="usuarioModifica" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="fechaModifica" Nullable="true" Precision="23" />
+    <Property Type="String" Name="vc_Estado" Nullable="true" MaxLength="3" />
+    <Property Type="Int32" Name="id_CantonInec" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="sp_RetornaDistritos_Result">
+    <Property Type="Int32" Name="id_Distrito" Nullable="false" />
+    <Property Type="Int32" Name="id_Canton" Nullable="false" />
+    <Property Type="String" Name="nombre" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Canton" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="usuarioCrea" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="fechaCrea" Nullable="true" Precision="23" />
+    <Property Type="String" Name="usuarioModifica" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="fechaModifica" Nullable="true" Precision="23" />
+    <Property Type="String" Name="vc_Estado" Nullable="true" MaxLength="3" />
+    <Property Type="Int32" Name="id_DistritoInec" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_RetornaPersona_Result">
+    <Property Type="Int32" Name="Id_Persona" Nullable="false" />
+    <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Correo" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Provincia" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="canton" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="distrito" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="sp_RetornaPersonas_Result">
+    <Property Type="Int32" Name="Id_Persona" Nullable="false" />
+    <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Correo" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="id_Provincia" Nullable="false" />
+    <Property Type="Int32" Name="id_Canton" Nullable="false" />
+    <Property Type="Int32" Name="id_Distrito" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="sp_RetornaProvincias_Result">
+    <Property Type="Int32" Name="id_Provincia" Nullable="false" />
+    <Property Type="String" Name="nombre" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="usuarioCrea" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="fechaCrea" Nullable="true" Precision="23" />
+    <Property Type="String" Name="usuarioModifica" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="fechaModifica" Nullable="true" Precision="23" />
+    <Property Type="String" Name="vc_Estado" Nullable="true" MaxLength="3" />
+  </ComplexType>
+  <ComplexType Name="sp_RetornaPersonaID_Result">
+    <Property Type="Int32" Name="Id_Persona" Nullable="false" />
+    <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Correo" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="Id_Provincia" Nullable="false" />
+    <Property Type="Int32" Name="Id_Canton" Nullable="false" />
+    <Property Type="Int32" Name="Id_Distrito" Nullable="false" />
+  </ComplexType>
+</Schema>

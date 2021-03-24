@@ -1,0 +1,35 @@
+﻿<link href="~/CSS/Estilos.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "PersonaNueva";
+}
+
+<h2>PersonaNueva</h2>
+<form method="post" id="Formulario" >
+    <fieldset id="Marco">
+        <legend>Persona</legend>
+        <a href="~/Personas/PersonaLista">Lista Persona</a>
+        <div class="form-group input">
+            <input type="text" name="Nombre" placeholder="Nombre" id="Nombre" required />
+        </div>
+        <div class="form-group input">
+            <input type="email" name="Correo" placeholder="Correo" id="Correo" required />
+        </div>
+        <div class="form-group input">
+            <select name="id_Provincia" id="provincia" class="form-control" required></select>
+        </div>
+        <div class="form-group input">
+            <select name="id_Canton" id="canton" class="form-control" required></select>
+        </div>
+        <div class="form-group input">
+            <select name="id_Distrito" id="distrito" class="form-control" required></select>
+        </div>
+        <div class="form-group button">
+            <input type="submit" value="Guardar" id="btnGuardar" />
+        </div>
+    </fieldset>
+</form>
+
+
+@section scripts{
+<script src="~/Scripts/Json/Geografia.js"></script>
+}

@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EntrevistaModelStoreContainer" CdmEntityContainer="EntrevistaEntities">
+    <EntitySetMapping Name="Canton">
+      <EntityTypeMapping TypeName="EntrevistaModel.Canton">
+        <MappingFragment StoreEntitySet="Canton">
+          <ScalarProperty Name="id_Canton" ColumnName="id_Canton" />
+          <ScalarProperty Name="id_Provincia" ColumnName="id_Provincia" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="usuarioCrea" ColumnName="usuarioCrea" />
+          <ScalarProperty Name="fechaCrea" ColumnName="fechaCrea" />
+          <ScalarProperty Name="usuarioModifica" ColumnName="usuarioModifica" />
+          <ScalarProperty Name="fechaModifica" ColumnName="fechaModifica" />
+          <ScalarProperty Name="vc_Estado" ColumnName="vc_Estado" />
+          <ScalarProperty Name="id_CantonInec" ColumnName="id_CantonInec" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Distrito">
+      <EntityTypeMapping TypeName="EntrevistaModel.Distrito">
+        <MappingFragment StoreEntitySet="Distrito">
+          <ScalarProperty Name="id_Distrito" ColumnName="id_Distrito" />
+          <ScalarProperty Name="id_Canton" ColumnName="id_Canton" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="usuarioCrea" ColumnName="usuarioCrea" />
+          <ScalarProperty Name="fechaCrea" ColumnName="fechaCrea" />
+          <ScalarProperty Name="usuarioModifica" ColumnName="usuarioModifica" />
+          <ScalarProperty Name="fechaModifica" ColumnName="fechaModifica" />
+          <ScalarProperty Name="vc_Estado" ColumnName="vc_Estado" />
+          <ScalarProperty Name="id_DistritoInec" ColumnName="id_DistritoInec" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Personas">
+      <EntityTypeMapping TypeName="EntrevistaModel.Personas">
+        <MappingFragment StoreEntitySet="Personas">
+          <ScalarProperty Name="Id_Persona" ColumnName="Id_Persona" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="id_Provincia" ColumnName="id_Provincia" />
+          <ScalarProperty Name="id_Canton" ColumnName="id_Canton" />
+          <ScalarProperty Name="id_Distrito" ColumnName="id_Distrito" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Provincia">
+      <EntityTypeMapping TypeName="EntrevistaModel.Provincia">
+        <MappingFragment StoreEntitySet="Provincia">
+          <ScalarProperty Name="id_Provincia" ColumnName="id_Provincia" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="usuarioCrea" ColumnName="usuarioCrea" />
+          <ScalarProperty Name="fechaCrea" ColumnName="fechaCrea" />
+          <ScalarProperty Name="usuarioModifica" ColumnName="usuarioModifica" />
+          <ScalarProperty Name="fechaModifica" ColumnName="fechaModifica" />
+          <ScalarProperty Name="vc_Estado" ColumnName="vc_Estado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_EliminaPersona" FunctionName="EntrevistaModel.Store.sp_EliminaPersona" />
+    <FunctionImportMapping FunctionImportName="sp_ModificaPersona" FunctionName="EntrevistaModel.Store.sp_ModificaPersona" />
+    <FunctionImportMapping FunctionImportName="sp_RegistraPersona" FunctionName="EntrevistaModel.Store.sp_RegistraPersona" />
+    <FunctionImportMapping FunctionImportName="sp_RetornaCantones" FunctionName="EntrevistaModel.Store.sp_RetornaCantones">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EntrevistaModel.sp_RetornaCantones_Result">
+          <ScalarProperty Name="id_Canton" ColumnName="id_Canton" />
+          <ScalarProperty Name="id_Provincia" ColumnName="id_Provincia" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="Provincia" ColumnName="Provincia" />
+          <ScalarProperty Name="usuarioCrea" ColumnName="usuarioCrea" />
+          <ScalarProperty Name="fechaCrea" ColumnName="fechaCrea" />
+          <ScalarProperty Name="usuarioModifica" ColumnName="usuarioModifica" />
+          <ScalarProperty Name="fechaModifica" ColumnName="fechaModifica" />
+          <ScalarProperty Name="vc_Estado" ColumnName="vc_Estado" />
+          <ScalarProperty Name="id_CantonInec" ColumnName="id_CantonInec" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_RetornaDistritos" FunctionName="EntrevistaModel.Store.sp_RetornaDistritos">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EntrevistaModel.sp_RetornaDistritos_Result">
+          <ScalarProperty Name="id_Distrito" ColumnName="id_Distrito" />
+          <ScalarProperty Name="id_Canton" ColumnName="id_Canton" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="Canton" ColumnName="Canton" />
+          <ScalarProperty Name="usuarioCrea" ColumnName="usuarioCrea" />
+          <ScalarProperty Name="fechaCrea" ColumnName="fechaCrea" />
+          <ScalarProperty Name="usuarioModifica" ColumnName="usuarioModifica" />
+          <ScalarProperty Name="fechaModifica" ColumnName="fechaModifica" />
+          <ScalarProperty Name="vc_Estado" ColumnName="vc_Estado" />
+          <ScalarProperty Name="id_DistritoInec" ColumnName="id_DistritoInec" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_RetornaPersona" FunctionName="EntrevistaModel.Store.sp_RetornaPersona">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EntrevistaModel.sp_RetornaPersona_Result">
+          <ScalarProperty Name="Id_Persona" ColumnName="Id_Persona" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="Provincia" ColumnName="Provincia" />
+          <ScalarProperty Name="canton" ColumnName="canton" />
+          <ScalarProperty Name="distrito" ColumnName="distrito" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_RetornaPersonas" FunctionName="EntrevistaModel.Store.sp_RetornaPersonas">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EntrevistaModel.sp_RetornaPersonas_Result">
+          <ScalarProperty Name="Id_Persona" ColumnName="Id_Persona" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="id_Provincia" ColumnName="id_Provincia" />
+          <ScalarProperty Name="id_Canton" ColumnName="id_Canton" />
+          <ScalarProperty Name="id_Distrito" ColumnName="id_Distrito" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_RetornaProvincias" FunctionName="EntrevistaModel.Store.sp_RetornaProvincias">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EntrevistaModel.sp_RetornaProvincias_Result">
+          <ScalarProperty Name="id_Provincia" ColumnName="id_Provincia" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="usuarioCrea" ColumnName="usuarioCrea" />
+          <ScalarProperty Name="fechaCrea" ColumnName="fechaCrea" />
+          <ScalarProperty Name="usuarioModifica" ColumnName="usuarioModifica" />
+          <ScalarProperty Name="fechaModifica" ColumnName="fechaModifica" />
+          <ScalarProperty Name="vc_Estado" ColumnName="vc_Estado" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_RetornaPersonaID" FunctionName="EntrevistaModel.Store.sp_RetornaPersonaID">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EntrevistaModel.sp_RetornaPersonaID_Result">
+          <ScalarProperty Name="Id_Persona" ColumnName="Id_Persona" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="Id_Provincia" ColumnName="Id_Provincia" />
+          <ScalarProperty Name="Id_Canton" ColumnName="Id_Canton" />
+          <ScalarProperty Name="Id_Distrito" ColumnName="Id_Distrito" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

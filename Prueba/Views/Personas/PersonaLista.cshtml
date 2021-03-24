@@ -1,0 +1,40 @@
+﻿@model List<Prueba.Models.sp_RetornaPersona_Result>
+@{
+    ViewBag.Title = "PersonaLista";
+}
+<link href="~/CSS/Estilos.css" rel="stylesheet" />
+<form action="#" method="post">
+    <fieldset style="border:1px solid">
+        <legend>Personas</legend>
+
+        <a href="~/Personas/PersonaNueva">Crear Persona</a>
+        <table class="table" border="1">
+            <tr>
+                <td><strong>Nombre</strong> </td>
+                <td><strong>Correo</strong></td>
+                <td><strong>Provincia</strong></td>
+                <td><strong>Cantón</strong></td>
+                <td><strong>Distrito</strong></td>
+                <td><strong>Acciones</strong></td>
+            </tr>
+            @{
+                foreach (Prueba.Models.sp_RetornaPersona_Result posicion in this.Model)
+                {
+                    <tr>
+                        <td>@posicion.Nombre</td>
+                        <td>@posicion.Correo</td>
+                        <td>@posicion.Provincia</td>
+                        <td>@posicion.canton</td>
+                        <td>@posicion.distrito</td>
+
+                        <td>
+                            <a href="~/Personas/PersonaModifica?Id_Persona=@posicion.Id_Persona" class="btn btn-info">Editar</a>
+                            <a href="~/Personas/PersonaEliminar?Id_Persona=@posicion.Id_Persona" class="btn btn-danger">Eliminar</a>
+                        </td>
+
+                    </tr>
+                }
+            }
+        </table>
+    </fieldset>
+</form>
